@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ros2-talker
+  namespace: sdi-ros-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros2-talker
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: macvlan-conf
+      labels:
+        app: ros2-talker
+        role: ros2
+    spec:
+      containers:
+      - image: jsseok/sdi_simple_app_cpp:latest
+        command: ["/bin/bash", "-c"]
+        args: ["source /opt/ros/$ROS_DISTRO/setup.bash && . /ros2_ws/install/local_setup.bash && ros2 run sdi_simple_app_cpp multiple_topics_talker"]
+        imagePullPolicy: IfNotPresent
+        tty: true
+        name: ros2-talker
+      nodeSelector:
+        kubernetes.io/hostname: node1-desktop
+      restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ros2-listener-1
+  namespace: sdi-ros-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros2-listener-1
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: macvlan-conf
+      labels:
+        app: ros2-listener-1
+        role: ros2
+    spec:
+      containers:
+      - image: jsseok/sdi_simple_app_cpp:latest
+        command: ["/bin/bash", "-c"]
+        args: ["source /opt/ros/$ROS_DISTRO/setup.bash && . /ros2_ws/install/local_setup.bash && ros2 run sdi_simple_app_cpp listener1"]
+        imagePullPolicy: IfNotPresent
+        tty: true
+        name: ros2-listener-1
+      nodeSelector:
+        kubernetes.io/hostname: node2-desktop
+      restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ros2-listener-2
+  namespace: sdi-ros-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros2-listener-2
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: macvlan-conf
+      labels:
+        app: ros2-listener-2
+        role: ros2
+    spec:
+      containers:
+      - image: jsseok/sdi_simple_app_cpp:latest
+        command: ["/bin/bash", "-c"]
+        args: ["source /opt/ros/$ROS_DISTRO/setup.bash && . /ros2_ws/install/local_setup.bash && ros2 run sdi_simple_app_cpp listener2"]
+        imagePullPolicy: IfNotPresent
+        tty: true
+        name: ros2-listener-2
+      nodeSelector:
+        kubernetes.io/hostname: node3-desktop
+      restartPolicy: Always
