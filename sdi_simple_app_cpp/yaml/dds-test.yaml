@@ -11,7 +11,7 @@ spec:
   template:
     metadata:
       annotations:
-        k8s.v1.cni.cncf.io/networks: macvlan-conf
+        k8s.v1.cni.cncf.io/networks: conf-macvlan-eth, conf-macvlan-wlan
       labels:
         app: ros2-talker
         role: ros2
@@ -42,7 +42,7 @@ spec:
   template:
     metadata:
       annotations:
-        k8s.v1.cni.cncf.io/networks: macvlan-conf
+        k8s.v1.cni.cncf.io/networks: conf-macvlan-eth, conf-macvlan-wlan
       labels:
         app: ros2-listener-1
         role: ros2
@@ -73,7 +73,7 @@ spec:
   template:
     metadata:
       annotations:
-        k8s.v1.cni.cncf.io/networks: macvlan-conf
+        k8s.v1.cni.cncf.io/networks: conf-macvlan-eth, conf-macvlan-wlan
       labels:
         app: ros2-listener-2
         role: ros2
@@ -86,5 +86,5 @@ spec:
         tty: true
         name: ros2-listener-2
       nodeSelector:
-        kubernetes.io/hostname: node3-desktop
+        kubernetes.io/hostname: ubuntu
       restartPolicy: Always

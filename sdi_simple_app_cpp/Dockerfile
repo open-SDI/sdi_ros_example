@@ -14,6 +14,5 @@ WORKDIR /ros2_ws
 # Copy the package into the workspace
 COPY . .
 
-
 # Install Package
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && colcon build --symlink-install
